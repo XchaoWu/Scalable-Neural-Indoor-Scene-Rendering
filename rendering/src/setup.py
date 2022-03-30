@@ -4,7 +4,7 @@ from typing import List
 from glob import glob 
 from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 print(find_packages())
-CUDA_FLAGS = []  # type: List[str]
+CUDA_FLAGS = [] 
 
 headers = [os.path.join(os.path.split(os.path.abspath(__file__))[0], 'include'),
            os.path.join(os.path.split(os.path.abspath(__file__))[0], 'imgui'),
@@ -28,7 +28,7 @@ ext_modules = [
         'render_to_screen.cpp',
         'binding.cpp',
     ] + ui_src,
-    libraries = ['GL', 'GLU', 'glut', 'glfw3'],
+    libraries = ['GL', 'GLU', 'glfw3'],
     extra_compile_args= {'nvcc': ["-Xptxas", "-v"]},
     include_dirs=headers),
 ]
