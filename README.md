@@ -6,11 +6,6 @@ We propose a scalable neural scene reconstruction and rendering method to suppor
 
 
 
-
-<img src="./pics/table.gif" height="250"/> <img src="./pics/light.gif" height="250"/> <img src="./pics/floor.gif" height="250"/>
-
-
-
 ## Requirements
 
 + **System**: Ubuntu 16.04 or 18.04
@@ -19,7 +14,7 @@ We propose a scalable neural scene reconstruction and rendering method to suppor
 + **CUDA version**: 11.1 or higher
 + **python**: 3.8 
 
-To install python packages, run:
+To install required python packages:
 
 ```shell
 pip install -r requirements.txt
@@ -50,7 +45,7 @@ bash build.sh
 
 ### Interactive rendering
 
-<img src='./pics/viewer.png' width=500>
+<img src='./pics/viewer.png' width=500 align='left'>
 
 We have provided a demo for interactive rendering. 
 
