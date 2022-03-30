@@ -45,7 +45,7 @@ bash build.sh
 
 ### Interactive rendering
 
-<img src='./pics/viewer.png' width=500 align='left'>
+<img src='./pics/viewer.png' width=500 >
 
 We have provided a demo for interactive rendering. 
 
