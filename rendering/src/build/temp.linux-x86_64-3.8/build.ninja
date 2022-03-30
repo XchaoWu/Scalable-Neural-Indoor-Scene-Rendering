@@ -1,0 +1,44 @@
+ninja_required_version = 1.3
+cxx = c++
+nvcc = /usr/local/cuda/bin/nvcc
+
+cflags = -pthread -B /home/yons/anaconda3/envs/py38/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/include -I/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui -I/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/backends -I/home/yons/anaconda3/envs/py38/lib/python3.8/site-packages/torch/include -I/home/yons/anaconda3/envs/py38/lib/python3.8/site-packages/torch/include/torch/csrc/api/include -I/home/yons/anaconda3/envs/py38/lib/python3.8/site-packages/torch/include/TH -I/home/yons/anaconda3/envs/py38/lib/python3.8/site-packages/torch/include/THC -I/usr/local/cuda/include -I/home/yons/anaconda3/envs/py38/include/python3.8 -c
+post_cflags = -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=FASTRENDERING -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++14
+cuda_cflags = -I/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/include -I/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui -I/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/backends -I/home/yons/anaconda3/envs/py38/lib/python3.8/site-packages/torch/include -I/home/yons/anaconda3/envs/py38/lib/python3.8/site-packages/torch/include/torch/csrc/api/include -I/home/yons/anaconda3/envs/py38/lib/python3.8/site-packages/torch/include/TH -I/home/yons/anaconda3/envs/py38/lib/python3.8/site-packages/torch/include/THC -I/usr/local/cuda/include -I/home/yons/anaconda3/envs/py38/include/python3.8 -c
+cuda_post_cflags = -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"'' -Xptxas -v -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=FASTRENDERING -D_GLIBCXX_USE_CXX11_ABI=0 -gencode=arch=compute_86,code=compute_86 -gencode=arch=compute_86,code=sm_86 -std=c++14
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+rule cuda_compile
+  depfile = $out.d
+  deps = gcc
+  command = $nvcc  $cuda_cflags -c $in -o $out $cuda_post_cflags
+
+
+
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/compute_rays.o: cuda_compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/compute_rays.cu
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/raytile_tracing.o: cuda_compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/raytile_tracing.cu
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/raydiffuse_render_octree_fp16.o: cuda_compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/raydiffuse_render_octree_fp16.cu
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/reorder.o: cuda_compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/reorder.cu
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/rayreflection_render.o: cuda_compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/rayreflection_render.cu
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/sampling.o: cuda_compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/sampling.cu
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/volume_rendering.o: cuda_compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/volume_rendering.cu
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/compute_group_boundary.o: cuda_compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/compute_group_boundary.cu
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/render_to_screen.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/render_to_screen.cpp
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/binding.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/binding.cpp
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui_demo.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/imgui_demo.cpp
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui_widgets.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/imgui_widgets.cpp
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui_draw.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/imgui_draw.cpp
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui_tables.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/imgui_tables.cpp
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/imgui.cpp
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/backends/imgui_impl_glfw.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/backends/imgui_impl_glfw.cpp
+build /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/backends/imgui_impl_opengl3.o: compile /home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/imgui/backends/imgui_impl_opengl3.cpp
+
+
+
+
+

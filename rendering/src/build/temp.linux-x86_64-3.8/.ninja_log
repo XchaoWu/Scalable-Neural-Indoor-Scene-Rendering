@@ -1,0 +1,18 @@
+# ninja log v5
+10	314	1648629393	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/backends/imgui_impl_opengl3.o	52d631cd1c45064a
+9	392	1648629393	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/backends/imgui_impl_glfw.o	59bd1d5e4606a0fa
+8	3144	1648629395	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui_tables.o	6c468a65ae747cf5
+5	6013	1648629398	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui_demo.o	bcb42022699facce
+5	6191	1648629399	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui_draw.o	3cdaa61c1510dd99
+5	6516	1648629399	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui_widgets.o	9abeb6507203bbc0
+4	7107	1648629399	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/render_to_screen.o	f348006e77902bbb
+8	7330	1648629400	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/imgui/imgui.o	d6c748ca35fc9f91
+4	26928	1648629419	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/binding.o	1f55233eeed2db76
+3	53407	1648629446	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/compute_group_boundary.o	472634a1892ef78d
+0	53531	1648629446	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/compute_rays.o	98b91cd0df3c334e
+2	53640	1648629446	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/sampling.o	855d73727442fe35
+3	54419	1648629447	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/volume_rendering.o	b40684ce83246f87
+1	54547	1648629447	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/raytile_tracing.o	6d0603c86b47137
+1	54913	1648629447	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/raydiffuse_render_octree_fp16.o	d1d2f0d32aff815d
+1	62479	1648629455	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/reorder.o	a37e15ecbc32f9b6
+2	138458	1648629531	/home/yons/projects/Scalable_Neural_Indoor_Scene_Rendering/rendering/src/build/temp.linux-x86_64-3.8/rayreflection_render.o	2a510e9010cfb7f7
