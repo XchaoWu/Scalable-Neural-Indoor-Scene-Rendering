@@ -1,6 +1,6 @@
-scene_path: '/home/yons/4TB/data/salon/renderData.npz'
-cnn_path: '/home/yons/4TB/data/salon/logs_unet/2022-01-11-00-54/epoch-1500.pth'
-# CNN_DIR: '/home/yons/4TB/data/wangchi_newnew/logs_unet/2022-01-16-21-34/epoch-1000.pth'
+scene_path: '/home/yons/4TB/data/wangchi_newnew/renderData.npz'
+# cnn_path: '/home/yons/4TB/data/salon/logs_unet/2022-01-11-00-54/epoch-1500.pth'
+cnn_path: '/home/yons/4TB/data/wangchi_newnew/logs_unet/2022-01-16-21-34/epoch-1000.pth'
 height: 720
 width: 1280
 focal: 1000

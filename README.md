@@ -23,4 +23,6 @@ coming soon ...
 
 ## Rendering
 
-coming soon ...
+<img src='./pics/viewer.png' width=500>
+
+Interactive rendering ( around 20 FPS, 1280 x 720 resolution).
