@@ -20,11 +20,7 @@ To install required python packages:
 pip install -r requirements.txt
 ```
 
-
-
-## Training
-
-coming soon ...
+For interactive rendering, you should also install **glfw**.
 
 
 
@@ -47,11 +43,19 @@ bash build.sh
 
 <img src='./pics/viewer.png' width=500 >
 
-We have provided a demo for interactive rendering. 
+We have provided a demo for interactive rendering. You can download the necessary rendering data [here](www.baidu.com). 
 
-You can download the necessary rendering data [here](www.baidu.com). 
+Then, change the ` scene path` and `cnn path` in `rendering/config/base.yaml` and run:
 
-Then, 
+```shell
+bash demo.sh
+```
+
+
+
+## Training
+
+coming soon ...
 
 
 
