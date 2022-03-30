@@ -66,7 +66,7 @@ class Unet(nn.Module):
 class CNN(nn.Module):
     def  __init__(self):
         super(CNN, self).__init__()
-        self.cur_inchannel = 5 # RGB D 
+        self.cur_inchannel = 5 
         self.RCONS = Unet(self.cur_inchannel)    
     def forward(self, x):
         out = self.RCONS(x)
