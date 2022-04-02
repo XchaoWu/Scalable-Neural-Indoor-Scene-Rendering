@@ -1,11 +1,9 @@
-scene_path: '/home/yons/4TB/data/wangchi_newnew/renderData.npz'
-# cnn_path: '/home/yons/4TB/data/salon/logs_unet/2022-01-11-00-54/epoch-1500.pth'
-cnn_path: '/home/yons/4TB/data/wangchi_newnew/logs_unet/2022-01-16-21-34/epoch-1000.pth'
+scene_path: '/home/yons/8TB/data/renderData.npz'
+cnn_path: '/home/yons/8TB/data/cnn.pth'
 height: 720
 width: 1280
-focal: 1000
+focal: 750
 max_tracing_tile: 30
 reflection_scale: 2
-soft_hit: False
-origin: [0,8,0]
-tensorRT: True
+origin: [0,10,0]
+tensorRT: True 

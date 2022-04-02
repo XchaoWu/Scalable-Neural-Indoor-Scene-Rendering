@@ -1,11 +1,9 @@
-// OpenGL Graphics includes
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
 #include "helper_gl.h"
-#include <GLFW/glfw3.h> // Will drag system OpenGL headers
+#include <GLFW/glfw3.h> 
 
 
 #ifdef _MSC_VER
@@ -55,39 +53,30 @@ void render_frame()
 void draw_imgui(){
     // auto& cam = rend.camera;
     
-    
     static bool show_demo_window = true;
     static bool show_another_window = false;
     static bool Unet = false;
     static bool low_reflection = true;
-    // static bool Depth = false;
-    // static bool Diffuse = false;
-    // static bool Reflection = false;
     static int render_mode = 1;
     static float trans_decay = 0.5f;
     static float focal_scale = 1.0f;
     static int counter = 0;
     static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     static float reflection_early_stop = 0.01;
-    static float relfection_far_scale = 1.0f;
-    // static float relfection_near_scale = 1.0f;
+    static float diffuse_early_stop = 0.01;
+    static int max_tracing_tile = 30;
+    static float sample_scale = 0.2f;
+    // static int num_thread = 256;
+    static float move_scale = 0.08f;
+    // static float relfection_far_scale = 1.0f;
 
-    // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-    // if (show_demo_window)
-    //     ImGui::ShowDemoWindow(&show_demo_window);
 
-    // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
     {
 
         ImGui::Begin("Control Panel");                          // Create a window called "Hello, world!" and append into it.
-
-        // ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-        // ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-        // ImGui::Checkbox("Another Window", &show_another_window);
 
         ImGui::Text("Rendering mode");
         ImGui::RadioButton("Frame", &render_mode, 1); ImGui::SameLine();
@@ -99,60 +88,24 @@ void draw_imgui(){
         if (ImGui::Button("Snapshot"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
             faster_render.attr("export_frame")();
 
-        // ImGui::Text("Camera paramters");
-        // ImGui::Text("Focal:");
-        // ImGui::Text("Camera position:");
-        // ImGui::Text("Camera Rotation:");
-
-        // ImGui::Checkbox("Diffuse", &Diffuse);
-        // ImGui::Checkbox("Reflection", &Reflection);
-        // ImGui::Checkbox("Depth", &Depth);
 
 
         ImGui::SliderFloat("focal", &focal_scale, 0.5f, 2.0f);
+        ImGui::SliderFloat("move scale", &move_scale, 0.01f, 1.0f);
         ImGui::SliderFloat("trans decay", &trans_decay, 0.0f, 1.0f);   
-        ImGui::SliderFloat("early stop", &reflection_early_stop, 0.0f, 0.3f);    
-        
+        ImGui::SliderFloat("early stop R", &reflection_early_stop, 0.0f, 0.5f);   
+        ImGui::SliderFloat("early stop D", &diffuse_early_stop, 0.0f, 0.5f); 
+    
+        ImGui::SliderInt("max tracing tile", &max_tracing_tile, 0, 30); 
+        ImGui::SliderFloat("sample step", &sample_scale, 0.2f, 1.0f);
+        // ImGui::SliderInt("num thread", &num_thread, 64, 1024); 
 
-        // ImGui::SliderFloat("reflection near", &relfection_near_scale, 1.0f, 2.0f); 
-        // Edit 1 float using a slider from 0.0f to 1.0f
-        ImGui::SliderFloat("reflection far", &relfection_far_scale, 0.0f, 1.0f); 
-        // ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-        // ImGui::SameLine();
-        // ImGui::Text("counter = %d", counter);
-
-        // ImGui::Text("Rendering %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-
-        // ImGui::TextColored(ImVec4(1,1,0,1), "Group List");
-        // ImGui::BeginChild("Scrolling");
-        // for (int n = 0; n < num_group; n++)
-        // {
-        //     ImGui::Text("Group %d", n); ImGui::SameLine();
-        //     ImGui::Checkbox("visiable", &group_enable_flag[n]);
-        // }
-        // ImGui::EndChild();
 
         ImGui::End();
     }
 
-    // 3. Show another simple window.
-    // if (show_another_window)
-    // {
-    //     ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-    //     ImGui::Text("Hello from another window!");
-    //     if (ImGui::Button("Close Me"))
-    //         show_another_window = false;
-    //     ImGui::End();
-    // }
     // Rendering
     ImGui::Render();
-    // int display_w, display_h;
-    // glfwGetFramebufferSize(window, &display_w, &display_h);
-    
-    // glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-    // glClear(GL_COLOR_BUFFER_BIT);
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -161,14 +114,12 @@ void draw_imgui(){
     faster_render.attr("set_trans_decay")(trans_decay);
     faster_render.attr("set_focal_scale")(focal_scale);
     faster_render.attr("enable_lr_reflection")(low_reflection);
-    faster_render.attr("set_early_stop")(reflection_early_stop);
-    faster_render.attr("set_far")(relfection_far_scale);
-    // faster_render.attr("set_near")(relfection_near_scale);
-
-    // faster_render.attr("set_unet")(Unet); // Unet
-    // faster_render.attr("set_depth")(Depth);
-    // faster_render.attr("set_diffuse")(Diffuse);
-    // faster_render.attr("set_reflection")(Reflection);
+    faster_render.attr("set_early_stop_R")(reflection_early_stop);
+    faster_render.attr("set_early_stop_D")(diffuse_early_stop);
+    faster_render.attr("set_max_tracing_tile")(max_tracing_tile);
+    faster_render.attr("set_sample_scale")(sample_scale);
+    // faster_render.attr("set_num_thread")(num_thread);
+    faster_render.attr("set_move_scale")(move_scale);
 }
 
 void initPixelBuffer()
@@ -286,24 +237,6 @@ void move(GLFWwindow* window, int key, int scancode, int action, int mods)
     case 'E':
         faster_render.attr("move_down")();
         break;
-    case GLFW_KEY_K:
-        if (action == GLFW_PRESS)
-        {
-            faster_render.attr("add_key_point")();
-        }
-        break;
-    case GLFW_KEY_L:
-        if (action == GLFW_PRESS)
-        {
-            faster_render.attr("delete_key_point")();
-        }
-        break;
-    case GLFW_KEY_O:
-        if (action == GLFW_PRESS)
-        {
-            faster_render.attr("export_key_point")();
-        }
-        break;
     default:
         break;
  }
@@ -361,14 +294,10 @@ void render_to_screen(py::object render, int w, int h, int ngroup)
     const char* glsl_version = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
     // Create window with graphics context
     GLFWwindow* window = glfwCreateWindow(width, height, "Scalable Neural Indoor Scene Rendering Viewer", NULL, NULL);
-    // if (window == NULL)
-    //     return 1;
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
 
@@ -381,9 +310,7 @@ void render_to_screen(py::object render, int w, int h, int ngroup)
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
 
-    // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
@@ -394,9 +321,7 @@ void render_to_screen(py::object render, int w, int h, int ngroup)
     glfwSetCursorPosCallback(window, motion);
     glfwSetKeyCallback(window, move);
     glfwSetScrollCallback(window, scrollCallback);
-    // glutReshapeFunc(reshape);
-    // glutIdleFunc(idle);
-    
+
     initPixelBuffer();
     // Main loop
     while (!glfwWindowShouldClose(window))

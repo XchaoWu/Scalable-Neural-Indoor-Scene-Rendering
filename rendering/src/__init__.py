@@ -15,7 +15,6 @@ class FRender:
                  focal=1000,
                  max_tracing_tile=30,
                  reflection_scale=2,
-                 soft_hit=False,
                  origin=[0,8,0],
                  tensorRT=True):
 
@@ -23,7 +22,6 @@ class FRender:
 
         self.Unet_path = cnn_path
         self.reflection_scale = reflection_scale
-        self.soft_hit = soft_hit
         self.TRT = tensorRT
         self.focal = focal
         self.max_tracing_tile = max_tracing_tile
@@ -33,22 +31,32 @@ class FRender:
 
         pynvml.nvmlInit()
 
-        
-        self.render_prepare(scene_path)
-
+        self.num_thread = 256 
+        self.max_pixels_per_block = 64 
+        self.ksize_boundary = 3
+        self.trans_decay = 0.8
+        self.enable_Unet = False 
+        self.early_stop_R = 0.01
+        self.early_stop_D = 0.01
+        self.sample_step_scale = 0.2 
+        self.move_scale = 0.08
 
         self.H = height // 4 * 4
         self.W = width // 4 * 4 
+        self.WINDOW_H = self.H  
+        self.WINDOW_W = self.W 
+        
+        self.render_prepare(scene_path)
 
         self.intrinsic = torch.tensor([self.W / 2., self.H / 2., 1./self.focal], 
                                         device=self.device, dtype=torch.float32)
 
         self.origin = torch.tensor(origin, dtype=torch.float32, device=self.device)
 
-        self.azimuth = 5.2
+        self.azimuth = 15
         self.radius = 4
         self.center = [0,0,0]
-        self.inclination = 1. 
+        self.inclination = 1.5
         self.compute_c2w()
 
 
@@ -57,12 +65,7 @@ class FRender:
         self.downscale_numPixel = self.DH * self.DW
         self.inverse_far = 1.0 / self.far
 
-        self.num_thread = 256 
-        self.max_pixels_per_block = 64 
-        self.ksize_boundary = 3
-        self.trans_decay = 0.8
-        self.enable_Unet = False 
-        self.trans_stop = 0.01
+
 
         self.up = torch.tensor([0,1,0], device=self.device, dtype=torch.float32)
         
@@ -95,7 +98,6 @@ class FRender:
     def render_prepare(self, path, **kwargs):
         render_data = np.load(path, allow_pickle=True)
 
-
         mem = 0
         for key in render_data:
             tem_mem = render_data[key].nbytes / (1000 ** 3) 
@@ -122,18 +124,15 @@ class FRender:
 
         self.get_gpuUsed()
 
-        self.focus = np.mean(render_data['centers'], axis=0)
-
         self.tile_size = self.num_voxel * self.voxel_size
         self.block_num_voxel = self.num_voxel // (2 ** self.octree_depth) + 2
 
-        self.sample_step = 0.2 * self.voxel_size
+        self.sample_step = self.sample_step_scale * self.voxel_size
         self.max_depth = np.max(render_data['tile_shape'] * self.tile_size)
         self.far = np.linalg.norm(self.tile_size * render_data['tile_shape'])
         self.sample_far = self.far
         self.scene_size = self.tile_shape * self.tile_size
         self.num_group = self.group_centers.shape[0]
-        self.move_scale = 0.08
 
 
     def enable_lr_reflection(self, flag):
@@ -145,11 +144,20 @@ class FRender:
         self.DW = self.W // self.reflection_scale
         self.downscale_numPixel = self.DH * self.DW
         
-    def set_early_stop(self, early_stop):
-        self.trans_stop = early_stop
+    def set_early_stop_R(self, early_stop):
+        self.early_stop_R = early_stop
+
+    def set_move_scale(self, scale):
+        self.move_scale = scale 
+
+    def set_early_stop_D(self, early_stop):
+        self.early_stop_D = early_stop
 
     def set_far(self, scale):
         self.sample_far = self.far * scale 
+
+    def set_max_tracing_tile(self, num):
+        self.max_tracing_tile = num
         
     def move_forward(self):
         self.origin = self.origin - torch.cross(self.c2w[:,0], self.up) * self.move_scale
@@ -160,17 +168,24 @@ class FRender:
     def move_right(self):
         self.origin = self.origin + self.c2w[:,0] * self.move_scale
     def move_up(self):
-        self.origin[1] += 0.05
+        self.origin[1] += self.move_scale
     def move_down(self):
-        self.origin[1] -= 0.05
+        self.origin[1] -= self.move_scale
     def zoom(self, scale):
         self.intrinsic[2] *= scale
 
     def set_focal_scale(self, scale):
         self.intrinsic[2] = 1. / (self.focal* scale)
     
+    def set_sample_scale(self, scale):
+        self.sample_step_scale = scale
+        self.sample_step = self.sample_step_scale * self.voxel_size
+    
     def set_trans_decay(self, v):
         self.trans_decay = v 
+    
+    def set_num_thread(self, num):
+        self.num_thread = num
 
     def display_groupIdx(self, x, y):
         groupIdx = int(self.large_netIdx[int(y+0.5),int(x+0.5)])
@@ -223,8 +238,10 @@ class FRender:
         self.render(**kwargs)
         torch.cuda.synchronize()
         end = time.time()
-        fps = 1. / (end - start)
-        print(f"\rFPS {fps}", end='')
+        ms = end - start
+        fps = 1. / ms
+        ms *= 1000
+        print(f"\r{ms:.2f} ms\t{fps:.2f} fps", end='')
 
     @torch.no_grad()
     def render(self, **kwargs):
@@ -246,7 +263,7 @@ class FRender:
                                                 self.nodes_IndexMap, self.nodes_sampleFlag,
                                                 self.voxels_start, self.centers, self.tile_size,
                                                 self.voxel_size, self.sample_step, self.block_num_voxel,
-                                                self.num_thread, self.trans_decay, 0.01, self.soft_hit,
+                                                self.num_thread, self.trans_decay, self.early_stop_D, False,
                                                 self.frame_diffuse,
                                                 inverse_near, netIdxs)
         del visitedTiles
@@ -299,12 +316,12 @@ class FRender:
                                             step, num_sample_per_step, samples, integrate_step)
             
             FASTRENDERING.inference_mlp(num_sample_per_step, int(block_starts[-1]), self.num_thread, 
-                            self.inverse_far, self.trans_stop, new_netIdxs, transparency,
+                            self.inverse_far, self.early_stop_R, new_netIdxs, transparency,
                             query_pixel_indices, new_pixel_starts, 
                             self.group_centers, samples, rays_d[::self.reflection_scale,::self.reflection_scale], self.net_params, sample_results)
 
             FASTRENDERING.integrate_points(sample_results, integrate_step, self.num_thread*2, 
-                                            self.trans_stop, transparency, self.frame_speculars)
+                                            self.early_stop_R, transparency, self.frame_speculars)
 
         self.frame_speculars = F.interpolate(self.frame_speculars[None,...].permute(0,3,1,2), 
                                              scale_factor=self.reflection_scale, mode='bilinear', 

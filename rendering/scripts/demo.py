@@ -8,4 +8,4 @@ with open(sys.argv[1],"r") as f:
 
 FR = FRender(**cfg)
 
-FASTRENDERING.render_to_screen(FR, FR.W, FR.H, FR.num_group)
+FASTRENDERING.render_to_screen(FR, FR.WINDOW_W, FR.WINDOW_H, FR.num_group)
