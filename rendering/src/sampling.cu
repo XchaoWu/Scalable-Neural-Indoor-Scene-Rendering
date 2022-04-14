@@ -32,7 +32,8 @@ void inverse_z_sampling_kernel(
         float zval = __fdiv_rn(1.0f, (offset + pointIdx) * inverse_bound[pixelIdx] + inverse_near[pixelIdx]);
         float next_zval = __fdiv_rn(1.0f, (offset + pointIdx + 1) * inverse_bound[pixelIdx] + inverse_near[pixelIdx]);
 
-        integrate_steps[cur_task_idx] = next_zval - zval;
+        integrate_steps[cur_task_idx] = fmax(next_zval - zval, 0);
+        
         #pragma unroll 
         for (int i=0; i<3; i++)
         {

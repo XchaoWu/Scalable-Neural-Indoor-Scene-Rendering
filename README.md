@@ -1,6 +1,6 @@
 # Scalable-Neural-Indoor-Scene-Rendering
 
-![](./pics/teaser.png)
+![](./pics/pipeline.png)
 
 We propose a scalable neural scene reconstruction and rendering method to support distributed training and interactive rendering of large indoor scenes.
 
