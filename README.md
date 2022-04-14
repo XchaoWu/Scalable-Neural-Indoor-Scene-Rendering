@@ -2,6 +2,8 @@
 
 ![](./pics/pipeline.png)
 
+### [Project Page](xxx) | [Video](xxx) | [Paper](xxx) 
+
 We propose a scalable neural scene reconstruction and rendering method to support distributed training and interactive rendering of large indoor scenes.
 
 
