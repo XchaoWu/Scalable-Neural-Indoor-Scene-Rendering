@@ -43,7 +43,7 @@ bash build.sh
 
 <img src='./pics/viewer.png' width=500 >
 
-We have provided a demo for interactive rendering. You can download the necessary rendering data [here](www.baidu.com). 
+We have provided a demo for interactive rendering. You can download the necessary rendering data [here](https://drive.google.com/file/d/1Hh0XhHqLO2Tq2vXU-WwKq16Z6K7HZCT1/view?usp=sharing). 
 
 Then, change the ` scene path` and `cnn path` in `rendering/config/base.yaml` and run:
 

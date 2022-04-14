@@ -1,5 +1,5 @@
-scene_path: '/home/yons/8TB/data/renderData.npz'
-cnn_path: '/home/yons/8TB/data/cnn.pth'
+scene_path: '/home/yons/8TB/data/data/renderData.npz'
+cnn_path: '/home/yons/8TB/data/data/cnn.pth'
 height: 720
 width: 1280
 focal: 750
