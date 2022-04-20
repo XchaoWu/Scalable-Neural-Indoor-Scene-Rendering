@@ -30,6 +30,8 @@ For interactive rendering, you should also install **glfw**.
 
 Our method can render image of resolution 1280 x 720 in 20 FPS. 
 
+For TensorRT acceleration, please first follow the [TensorRT Installation Guide](https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html), then install [torch2trt](https://github.com/NVIDIA-AI-IOT/torch2trt#option-1---without-plugins).
+
 ### Build for rendering
 
 To build the rendering project:
