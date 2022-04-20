@@ -47,9 +47,15 @@ bash build.sh
 
 <img src='./pics/viewer.png' width=500 >
 
-We have provided a demo for interactive rendering. You can download the necessary rendering data [here](https://drive.google.com/file/d/1Hh0XhHqLO2Tq2vXU-WwKq16Z6K7HZCT1/view?usp=sharing). 
+We have provided a demo for interactive rendering. 
 
-Then, change the ` scene path` and `cnn path` in `rendering/config/base.yaml` and run:
+You can download the necessary rendering data [here](https://drive.google.com/file/d/1Hh0XhHqLO2Tq2vXU-WwKq16Z6K7HZCT1/view?usp=sharing). Unzip file:
+
+```shell
+unzip data.zip
+```
+
+Then, replace the ` scene path` and `cnn path` in `rendering/config/base.yaml` with `data/renderData.npz` and `data/cnn.pth` , run:
 
 ```shell
 bash demo.sh
