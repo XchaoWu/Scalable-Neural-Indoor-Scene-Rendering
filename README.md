@@ -11,7 +11,7 @@ We propose a scalable neural scene reconstruction and rendering method to suppor
 ## Requirements
 
 + **System**: Ubuntu 16.04 or 18.04
-+ **GCC/G++**: 7.5.0 or higher
++ **GCC/G++**: 7.5.0 
 + **GPU** : we implement our method on RTX 3090. 
 + **CUDA version**: 11.1 or higher
 + **python**: 3.8 
