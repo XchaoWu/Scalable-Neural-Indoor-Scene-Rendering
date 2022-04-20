@@ -19,7 +19,7 @@ We propose a scalable neural scene reconstruction and rendering method to suppor
 To install required python packages:
 
 ```shell
-pip install -r requirements.txt
+conda env create -f env.yaml
 ```
 
 For interactive rendering, you should also install **glfw**.
