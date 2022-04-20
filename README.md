@@ -55,9 +55,5 @@ bash demo.sh
 
 
 
-## Training
-
-coming soon ...
-
 
 
