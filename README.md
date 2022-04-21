@@ -49,7 +49,7 @@ bash build.sh
 
 We have provided a demo for interactive rendering. 
 
-You can download the necessary rendering data [here](https://drive.google.com/file/d/1Hh0XhHqLO2Tq2vXU-WwKq16Z6K7HZCT1/view?usp=sharing). Unzip file:
+You can download the necessary rendering data [here](https://drive.google.com/file/d/1K2YFchSkCOerWZQ2UZtXWFzTG6Ph1n72/view?usp=sharing). Unzip file:
 
 ```shell
 unzip data.zip

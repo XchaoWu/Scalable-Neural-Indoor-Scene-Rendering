@@ -28,7 +28,8 @@ class Unet(nn.Module):
 
         self.relu = nn.ReLU()
 
-        self.down = nn.MaxPool2d(kernel_size=2, stride=2)
+        # self.down = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.down = nn.AvgPool2d(kernel_size=2, stride=2)
         self.up = nn.Upsample(scale_factor=2, mode=mode,align_corners=align_corners)
     
     def forward(self,x):
