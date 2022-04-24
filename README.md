@@ -22,13 +22,13 @@ To install required python packages:
 conda env create -f env.yaml
 ```
 
-For interactive rendering, you should also install **glfw**.
-
-
+C dependencies: [cnpy](https://github.com/rogersce/cnpy), [tqdm](https://github.com/tqdm/tqdm.cpp), [tinyply](https://github.com/ddiakopoulos/tinyply), 
 
 ## Rendering
 
 Our method can render image of resolution 1280 x 720 in 20 FPS. 
+
+For interactive rendering, you should also install [imgui](https://github.com/ocornut/imgui), [glfw-3.3.6](https://github.com/glfw/glfw).
 
 For TensorRT acceleration, please first follow the [TensorRT Installation Guide](https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html), then install [torch2trt](https://github.com/NVIDIA-AI-IOT/torch2trt#option-1---without-plugins).
 
