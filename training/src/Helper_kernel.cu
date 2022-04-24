@@ -42,7 +42,6 @@ inline __device__ T transparency_interpolation(
     float3 tile_corner = tile_center - tile_size / 2.0f;
     // overlap 1 voxel
     float3 fidx = (pts - tile_corner) / voxel_size + 0.5f;
-    // 内插
     int x0 = (int)fidx.x, y0 = (int)fidx.y, z0 = (int)fidx.z;
     int x1 = x0 + 1, y1 = y0 + 1, z1 = z0 + 1;
     float x = fidx.x - x0, y = fidx.y - y0, z = fidx.z - z0;

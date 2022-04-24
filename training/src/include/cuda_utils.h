@@ -439,14 +439,12 @@ inline __host__ __device__ bool AABB_triangle_intersection(
     float3 center, float3 size, 
     float3 A, float3 B, float3 C)
 {
-    // 把AABB移动到世界坐标原点，同时移动三角形
     A = A - center;
     B = B - center;
     C = C - center;
 
     float3 half_size = size / 2.0f;
 
-    // 三角形的最大corner小于AABB的最小corner 或者 三角形的最小corner大于AABB的最大corner 
     float3 max_tri_corner = fmaxf(fmaxf(A,B),C);
     if (max_tri_corner.x <= (-1 * half_size.x)) return false;
     if (max_tri_corner.y <= (-1 * half_size.y)) return false;
@@ -458,7 +456,6 @@ inline __host__ __device__ bool AABB_triangle_intersection(
     if (min_tri_corner.y >= half_size.y) return false;
     if (min_tri_corner.z >= half_size.z) return false;
 
-    // 计算三角形三边向量
     float3 AB = B - A;
     float3 BC = C - B;
     float3 CA = A - C;
@@ -467,16 +464,13 @@ inline __host__ __device__ bool AABB_triangle_intersection(
     float3 eye[3] = {make_float3(1,0,0), make_float3(0,1,0), make_float3(0,0,1)};
 
     
-    // 计算 9 个 axis 
     for (int i=0; i<3; i++)
     {
         for (int j=0; j<3; j++)
         {
             float3 axis = cross(eye[i], side[j]);
-            // 把三角形三个点投影到轴上
             float3 p = make_float3(dot(A,axis),dot(B,axis),dot(C,axis));
 
-            // AABB 已经被移动到原点
             float r = dot(size, fabs(axis));
             float max_p = fmax(fmax(p.x, p.y), p.z);
             float min_p = fmin(fmin(p.x, p.y), p.z);
@@ -487,10 +481,8 @@ inline __host__ __device__ bool AABB_triangle_intersection(
     for (int i=0; i<3; i++)
     {
         float3 axis = eye[i];
-        // 把三角形三个点投影到轴上
         float3 p = make_float3(dot(A,axis),dot(B,axis),dot(C,axis));
 
-        // AABB 已经被移动到原点
         float r = dot(size, fabs(axis));
         float max_p = fmax(fmax(p.x, p.y), p.z);
         float min_p = fmin(fmin(p.x, p.y), p.z);
@@ -498,9 +490,7 @@ inline __host__ __device__ bool AABB_triangle_intersection(
     }
 
     float3 axis = cross(AB, BC);
-    // 把三角形三个点投影到轴上
     float3 p = make_float3(dot(A,axis),dot(B,axis),dot(C,axis));
-    // AABB 已经被移动到原点
     float r = dot(size, fabs(axis));
     float max_p = fmax(fmax(p.x, p.y), p.z);
     float min_p = fmin(fmin(p.x, p.y), p.z);

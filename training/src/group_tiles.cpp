@@ -334,8 +334,7 @@ std::vector<int> group_tiles(
     }
     bar1.finish();
 
-    
-    // 计算
+
     for (int i=0; i<temp_grouped_tiles.size(); i++)
     {
         if (temp_grouped_tiles[i].size() == 0) continue;

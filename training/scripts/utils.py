@@ -628,7 +628,6 @@ def pruning_v2(model, nodes_flag, tile_center, tile_size, voxel_size, density=4)
     # D x H x W x 3 
     regular_indices = create_meshgrid(D, H, W)
 
-    # 减去 dilate  的 voxel_size 
     min_corner = tile_center - tile_size / 2.0 - voxel_size
 
     # D x H x W x 3

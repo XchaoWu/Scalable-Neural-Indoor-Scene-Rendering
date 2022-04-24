@@ -80,13 +80,11 @@ float4 trilinear_base(
             {
                 return voxels[idx_x0y0z0];
             }else{
-                // 只有 z 没有出界
                 return interpolate1D(voxels[idx_x0y0z0],voxels[idx_x0y0z1],z);
             }
         }else{
             if (z1 >= Mz)
             {
-                // 只有 y 没出界
                 return interpolate1D(voxels[idx_x0y0z0],voxels[idx_x0y1z0],y);
             }else{
                 return interpolate2D(voxels[idx_x0y0z0], voxels[idx_x0y1z0],

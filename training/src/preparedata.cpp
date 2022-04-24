@@ -269,7 +269,7 @@ void init_nodes_flag(
 
         // -----------------------
         float3 tri_center = (min_c + max_c) / 2.0f;
-        float3 tri_size = (max_c - min_c) + 2.0f * dilate_size; // 涨dilate 
+        float3 tri_size = (max_c - min_c) + 2.0f * dilate_size;
         float3 half_trisize = tri_size / 2.0f;
         min_c = tri_center - half_trisize;
         max_c = tri_center + half_trisize;
@@ -321,7 +321,7 @@ void preparedata(
     float tile_size,
     int num_block,
     int height, int width,
-    std::vector<int> imgIdxs, // 当前tile包含的图片
+    std::vector<int> imgIdxs, 
     std::vector<float3> &data) 
 {
 
@@ -693,7 +693,6 @@ void preparedata_patch_sec(
     for (int i=0; i<tileIdxs.size(); i++)
     {
         int trainTileIdx = tileIdxs[i];
-        std::cout << i << "/" << tileIdxs.size() << " 生成 tile " << trainTileIdx << " 数据" << std::endl;
         const int* tile_visImg = VisImg.data() + trainTileIdx * num_camera;
         for (int j=0; j<num_camera; j++)
         {

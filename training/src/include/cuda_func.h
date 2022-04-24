@@ -112,7 +112,7 @@ void get_trainData_v3(
     const int max_tracingTile,
     const int num_block,
     const int height, const int width,
-    const int patch_size, // patch 数据
+    const int patch_size, 
     const bool debug,
     std::vector<float> &data);
 
@@ -124,7 +124,7 @@ void get_trainData_v4(
     const std::vector<float3> centers,
     const std::vector<int> IndexMap,
     const std::vector<int> imgIdxs,
-    const std::vector<int> SparseToGroup, // 输入tile sparse Idx, tile在所属的group(广义上的)内部的idx
+    const std::vector<int> SparseToGroup,
     const int num_render_tiles, 
     float* voxels, 
     short* nodes, 
@@ -138,7 +138,7 @@ void get_trainData_v4(
     const float sample_step,
     const int max_tracingTile,
     const int height, const int width,
-    const int patch_size, // patch 数据
+    const int patch_size, 
     const bool debug,
     std::vector<float> &data);
 

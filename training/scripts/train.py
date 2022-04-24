@@ -30,7 +30,6 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 random.seed(seed)
-
 TS = TileScene(cfg, args.refine, args.cfg)
 
 if args.parallel == False:

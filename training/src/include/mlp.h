@@ -34,7 +34,6 @@ enum ACTIVATION {SIGMOID, RELU, TANH, LEAKYRELU};
 inline __device__ __host__
 float3 inference_SH_nodiffuse(const int deg, const float3 rays_d, float3* coeffi)
 {
-    // rays_d 需要 normalize 
     assert(deg <= 4 and deg >= 0);
     float3 result = make_float3(0.0f, 0.0f, 0.0f);
     if (deg > 0)
@@ -85,7 +84,6 @@ float3 inference_SH_nodiffuse(const int deg, const float3 rays_d, float3* coeffi
 inline __device__ __host__
 float3 inference_SH(const int deg, const float3 rays_d, float3* coeffi)
 {
-    // rays_d 需要 normalize 
     assert(deg <= 4 and deg >= 0);
 
     float3 result = C0 * coeffi[0];

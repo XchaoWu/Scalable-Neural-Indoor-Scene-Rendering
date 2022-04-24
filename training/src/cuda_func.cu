@@ -33,17 +33,15 @@ void computing_rays_kernel(
         start_task_idx = cur_thread * (base_jobs + 1);
     }
 
-    // 并行单元 光线
+
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前的点的idx 
-        // [BUGs here]
+
         int cur_task_idx = start_task_idx + i;
-        // 当前处理的像素
+
         int _y = cur_task_idx / width;
         int _x = cur_task_idx % width;
 
-        // 计算射线 
         float3 ray_o, ray_d;
         get_rays(_x, _y, K, C2W, ray_o, ray_d);
         rays_o[cur_task_idx] = ray_o;
@@ -85,10 +83,8 @@ void tracingTile_kernel(
     //     scene_size.x,scene_size.y,scene_size.z);
     // }
 
-    // 并行单元 光线
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前的点的idx 
         int cur_task_idx = start_task_idx + i;
 
         int* cur_visitedTiles = visitedTiles+cur_task_idx*max_tracingTile;
@@ -102,10 +98,8 @@ void tracingTile_kernel(
         float3 rays_d = rays_dir[cur_task_idx];
         rays_d = normalize(rays_d);
 
-        // 计算射线闯过的 tile idx 
         float3 ray_o_local = rays_o - scene_min_corner;
 
-        // 判断视点 是否在场景内部
         if (ray_o_local.x < 0 || ray_o_local.x >= scene_size.x ||
             ray_o_local.y < 0 || ray_o_local.y >= scene_size.y ||
             ray_o_local.z < 0 || ray_o_local.z >= scene_size.z )
@@ -132,7 +126,7 @@ void tracingTile_kernel(
     }
 }
 
-// 每个Tile为并行单元，求第一个交点
+
 __global__ 
 void ray_firstHit_inTile_kernel(
     const int height,
@@ -168,10 +162,8 @@ void ray_firstHit_inTile_kernel(
     int blocks_per_tile = num_block * num_block * num_block;
     float block_size = tile_size / num_block;
 
-    // 并行单元 tile 
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前的点的idx 
         int cur_task_idx = start_task_idx + i;
 
         firstHitsFace[cur_task_idx] = -1;
@@ -185,7 +177,6 @@ void ray_firstHit_inTile_kernel(
 
         const int2* cur_BConFaceNum = BConFaceNum + tileIdx * blocks_per_tile;
 
-        // 计算射线 
         float3 rays_o = rays_start[ray_idx];
         float3 rays_d = rays_dir[ray_idx];
         // float3 rays_o, rays_d;
@@ -212,7 +203,6 @@ void ray_firstHit_inTile_kernel(
 
         while(true)
         {
-            // 遍历当前加速结构block包含的三角形,若相交，则break
             int bidx = current_block.z + current_block.y * num_block + current_block.x * num_block * num_block;
             float3 block_center = min_corner + make_float3(current_block) * block_size  + block_size / 2.0f;
             int start_face = cur_BConFaceNum[bidx].x;
@@ -291,7 +281,6 @@ void ray_firstHit_inTile_kernel(
 
 }
 
-// 求交两次, tile并行 若相交  存储深度，否则 存储 -1 
 __global__ 
 void ray_doubleHit_inTile_kernel(
     const int height,
@@ -326,10 +315,8 @@ void ray_doubleHit_inTile_kernel(
     int blocks_per_tile = num_block * num_block * num_block;
     float block_size = tile_size / num_block;
 
-    // 并行单元 tile 
     for (int i=0; i<task_num; i++)
-    {
-        // 表示当前的点的idx 
+    { 
         int cur_task_idx = start_task_idx + i;
 
         doubleHits[cur_task_idx].x = -1;
@@ -344,7 +331,6 @@ void ray_doubleHit_inTile_kernel(
 
         const int2* cur_BConFaceNum = BConFaceNum + tileIdx * blocks_per_tile;
 
-        // 计算射线 
         float3 rays_o = rays_start[ray_idx];
         float3 rays_d = rays_dir[ray_idx];
         // float3 rays_o, rays_d;
@@ -373,7 +359,6 @@ void ray_doubleHit_inTile_kernel(
         float near = INF; float second_near = INF;
         while(true)
         {
-            // 遍历当前block包含的三角形,若相交，则break
             int bidx = current_block.z + current_block.y * num_block + current_block.x * num_block * num_block;
             float3 voxel_center = min_corner + make_float3(current_block) * block_size  + block_size / 2.0f;
             int start_face = cur_BConFaceNum[bidx].x;
@@ -487,17 +472,15 @@ void get_firstHit_kernel(
         start_task_idx = cur_thread * (base_jobs + 1);
     }
 
-    // 并行单元 光线
     for (int i=0; i<task_num; i++)
-    {
-        // 表示当前的点的idx 
+    { 
         int cur_task_idx = start_task_idx + i;
 
         const float* cur_firstHits = firstHits + cur_task_idx * max_tracingTile;
         const int* cur_firstHitFace = firstHitFace + cur_task_idx * max_tracingTile;
         int* cur_ref_tag = ref_tag + cur_task_idx * max_tracingTile;
 
-        // 计算射线 
+
         float3 rays_o = rays_start[cur_task_idx];
         float3 rays_d = rays_dir[cur_task_idx];
 
@@ -506,7 +489,6 @@ void get_firstHit_kernel(
         {
             if (cur_firstHits[j] != 0)
             {
-                // 第一个交点
                 float firsthit = cur_firstHits[j];
                 int hitface = cur_firstHitFace[j];
                 cur_ref_tag[j] = 1;
@@ -565,10 +547,8 @@ void get_VisImg_kernel(
         start_task_idx = cur_thread * (base_jobs + 1);
     }
 
-    // 并行单元 光线
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前的点的idx 
         int cur_task_idx = start_task_idx + i;
 
         const float* cur_firstHits = firstHits + cur_task_idx * max_tracingTile;
@@ -603,54 +583,6 @@ void get_VisImg_kernel(
     }
 }
 
-// // 去掉高光
-// __global__ 
-// void compute_specular_diff(
-//     const float3* rays_start, // B x 3
-//     const float3* rays_dir,  // B x 3 
-//     const float* firstHits, // B x 1
-//     const float* Ks,
-//     const float* C2Ws, 
-//     const int num_camera,
-//     const int numPixels,
-//     int add_num, int base_jobs)
-// {
-//     int cur_thread = threadIdx.x + blockIdx.x * blockDim.x;
-//     int task_num,cur_task_idx;
-
-//     if (cur_thread >= add_num){
-//         task_num = base_jobs;
-//         cur_task_idx = cur_thread * base_jobs + add_num;
-//     }else{
-//         task_num = base_jobs + 1;
-//         cur_task_idx = cur_thread * (base_jobs + 1);
-//     }
-//     // 并行单元 光线对应一个相机
-//     for (int i=0; i<task_num; i++)
-//     {
-//         // 表示当前的idx 
-//         cur_task_idx = cur_task_idx + i;
-
-//         int pixelIdx = cur_task_idx / num_camera;
-//         int cameraIdx = cur_task_idx % num_camera;
-
-//         const float* K = Ks + cameraIdx * 9;
-//         const float* C2W = C2Ws + cameraIdx * 12;
-
-//         float3 rays_o = rays_start[pixelIdx];
-//         float3 rays_d = rays_dir[pixelIdx];
-
-//         // 空间中的交点
-//         float3 pts = rays_o + firstHits[pixelIdx] * rays_d;
-
-//         // 计算这条光线和空间的交点是否和 pts 接近
-//         float3 corre_rays_o = make_float3(C2W[3],C2W[7],C2W[11]);
-//         float3 corre_rays_d = pts - corre_rays_o;
-
-//         //
-//     }
-// }
-
 
 __global__ 
 void get_trainData_kernel(
@@ -663,7 +595,7 @@ void get_trainData_kernel(
     const float2* doubleHits,
     const int max_tracingTile,
     float* bgdepth,
-    int* valid, // numPixels 当前像素是否可以作为训练数据
+    int* valid, 
     int add_num, int base_jobs)
 {
     int cur_thread = threadIdx.x + blockIdx.x * blockDim.x;
@@ -677,13 +609,10 @@ void get_trainData_kernel(
         start_task_idx = cur_thread * (base_jobs + 1);
     }
 
-    // 并行单元 光线
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前的点的idx 
         int cur_task_idx = start_task_idx + i;
 
-        // 计算射线 
         // float3 rays_o = rays_start[cur_task_idx];
         // float3 rays_d = rays_dir[cur_task_idx];
 
@@ -695,7 +624,6 @@ void get_trainData_kernel(
         float first_zval = -1, second_zval = -1;
         int flag_first = -1;
 
-        // 需要的不是前两次hit， 而是前两次hit并且两次hit在不同的tile 
         for (int j=0; j<max_tracingTile; j++)
         {
             if (cur_doubleHits[j].x != -1){
@@ -722,7 +650,6 @@ void get_trainData_kernel(
             {
                 if (j == flag_first)
                 {
-                    // 如果不存在第二个交点，那么就设定为-1 
                     // if (second_zval == -1) second_zval = -1.0f;
                     bgdepth[cur_task_idx] = second_zval;
                 }else{
@@ -751,7 +678,7 @@ void get_trainData_kernel_v2(
     const int max_tracingTile,
     // float3* bgcolors,
     float* bgdepth,
-    int* valid, // numPixels 当前像素是否可以作为训练数据
+    int* valid,
     int add_num, int base_jobs)
 {
     int cur_thread = threadIdx.x + blockIdx.x * blockDim.x;
@@ -765,13 +692,10 @@ void get_trainData_kernel_v2(
         start_task_idx = cur_thread * (base_jobs + 1);
     }
 
-    // 并行单元 光线
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前的点的idx 
         int cur_task_idx = start_task_idx + i;
 
-        // 计算射线 
         // float3 rays_o = rays_start[cur_task_idx];
         // float3 rays_d = rays_dir[cur_task_idx];
 
@@ -793,7 +717,6 @@ void get_trainData_kernel_v2(
                 break;
             }
         }
-        // 需要的不是前两次hit， 而是前两次hit并且两次hit在不同的tile 
         for (int j=0; j<max_tracingTile; j++)
         {
             if (cur_doubleHits[j].x != -1){
@@ -828,8 +751,6 @@ void get_trainData_kernel_v2(
             {
                 if (j == flag_first)
                 {
-                    // 如果不存在第二个交点，那么就设定为-1 
-                    // if (second_zval == -1) second_zval = -1.0f;
                     bgdepth[cur_task_idx] = second_zval;
                 }else{
                     bgdepth[cur_task_idx] = first_zval;
@@ -1289,7 +1210,7 @@ void gen_diffuse_in_tile_kernel(
     const int height, 
     const int width,
     float3* diffuses, // B 
-    float* bgdepth, // 检查， 如果bgdepth在所有view都不可见, 那么设置为-1 
+    float* bgdepth,
     int add_num, int base_jobs)
 {
     int cur_thread = threadIdx.x + blockIdx.x * blockDim.x;
@@ -1305,10 +1226,8 @@ void gen_diffuse_in_tile_kernel(
 
     int numPixels = height * width;
 
-    // 并行单元 光线
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前的点的idx 
         int cur_task_idx = start_task_idx + i;
 
         const float2* cur_doubleHits = doubleHits + cur_task_idx * max_tracingTile;
@@ -1319,7 +1238,6 @@ void gen_diffuse_in_tile_kernel(
 
         diffuses[cur_task_idx] = make_float3(0.0f, 0.0f, 0.0f);
 
-        // 找到第一个交点
         float first_zval = -1;
         for (int j=0; j<max_tracingTile; j++)
         {
@@ -1335,7 +1253,6 @@ void gen_diffuse_in_tile_kernel(
         {
             float3 bgpoint = rays_o + bgdepth[cur_task_idx] * rays_d;
             bool visible = false;
-            // 检查bgdepth是否可见
             for (int j=0; j<num_images; j++)
             {
                 const float* matrix = ms + j * 12;
@@ -1367,7 +1284,6 @@ void gen_diffuse_in_tile_kernel(
         // int count = 0;
         float weight = 0.0f;
 
-        // 投影到各个view
         for (int j=0; j<num_images; j++)
         {
             float3 proj_origin = origins[j];
@@ -1441,7 +1357,7 @@ void get_trainData_v3(
     const int max_tracingTile,
     const int num_block,
     const int height, const int width,
-    const int patch_size, // patch 数据
+    const int patch_size, 
     const bool debug,
     std::vector<float> &data)
 {
@@ -1889,11 +1805,11 @@ __global__ void render_diffuse_kernel(
 void get_trainData_v4(
     const int trainTileIdx,
     const std::string img_path,
-    const std::string diffuse_path, // 这个其实是mirror depth 
+    const std::string diffuse_path, 
     const std::vector<float3> centers,
     const std::vector<int> IndexMap,
     const std::vector<int> imgIdxs,
-    const std::vector<int> SparseToGroup, // 输入tile sparse Idx, tile在所属的group(广义上的)内部的idx
+    const std::vector<int> SparseToGroup,
     const int num_render_tiles, 
     float* voxels, 
     short* nodes, 
@@ -1907,7 +1823,7 @@ void get_trainData_v4(
     const float sample_step,
     const int max_tracingTile,
     const int height, const int width,
-    const int patch_size, // patch 数据
+    const int patch_size, 
     const bool debug,
     std::vector<float> &data)
 {
@@ -2325,10 +2241,8 @@ void render_TileScene_kernel(
     int voxels_per_tile = num_voxel * num_voxel * num_voxel;
     float3 zeros = make_float3(0.0f, 0.0f, 0.0f);
     float3 scene_size = make_float3(tile_shape) * tile_size;
-    // 并行单元 光线
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前的点的idx 
         int cur_task_idx = start_task_idx + i;
 
         int* cur_visitedTiles = visitedTiles + cur_task_idx * max_tracingTile;
@@ -2339,18 +2253,15 @@ void render_TileScene_kernel(
             cur_visitedTiles[j] = -1;
         }
 
-        // 当前处理的像素
+
         int _y = cur_task_idx / width;
         int _x = cur_task_idx % width;
 
-        // 计算射线 
         float3 ray_o, ray_d;
         get_rays(_x, _y, K, C2W, ray_o, ray_d);
 
-        // 计算这条光线穿过的tile 
         float3 ray_o_local = ray_o - scene_min_corner;
 
-        // 判断视点 是否在场景内部
         if (ray_o_local.x < 0 || ray_o_local.x >= scene_size.x ||
             ray_o_local.y < 0 || ray_o_local.y >= scene_size.y ||
             ray_o_local.z < 0 || ray_o_local.z >= scene_size.z )
@@ -2397,7 +2308,6 @@ void render_TileScene_kernel(
             float3 tile_center = centers[tileIdx];
             cur_bounds[j] = RayAABBIntersection(ray_o, ray_d, tile_center, half_size);
 
-            //  value存在voxel中心点
             const float4* cur_voxels = voxels + tileIdx * voxels_per_tile;
 
             float near = cur_bounds[j].x;
@@ -2408,7 +2318,6 @@ void render_TileScene_kernel(
 
             if (near > far) continue;
 
-            // 选择的采样间隔是voxel size的 0.5
             // int sample_num = (int)(far - near) / (voxel_size * 0.5);
             // if (sample_num < 1) sample_num = 1;
             int sample_num = (int)(Nsamples * (far - near) / tile_size);
@@ -2602,7 +2511,6 @@ __global__ void gen_voxels_kernel(
 
     for (int i=0; i<task_num; i++)
     {
-        // 表示当前Tile的idx 
         int cur_task_idx = start_task_idx + i;
         float3 tile_center = centers[cur_task_idx];
         float3 half_size = sizes[cur_task_idx] / 2.0f;
@@ -2617,7 +2525,6 @@ __global__ void gen_voxels_kernel(
 
         int start_face = ConFaceStart[cur_task_idx];
         int face_num = ConFaceNum[cur_task_idx];
-        // 遍历当前tile包含的所有面片
         for (int j=start_face; j<start_face + face_num; j++)
         {
             int3 vidx = faces[ConFaceIdx[j]];
