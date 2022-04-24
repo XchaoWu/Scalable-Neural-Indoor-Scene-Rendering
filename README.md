@@ -61,7 +61,28 @@ Then, replace the ` scene path` and `cnn path` in `rendering/config/base.yaml` w
 bash demo.sh
 ```
 
+## Training
 
+For training a tile, please run:
+
+```shell
+python train.py -c {config_file} -t {tileIdx} -g {gpu_idx}
+```
+
+For training a group of tile, please first make a file `group.txt` as follows:
+
+```txt
+tileIdx1
+tileIdx2 
+...
+tileIdxN 
+```
+
+Then, run:
+
+```shell
+python train.py -c {config_file} -ts group.txt -g {gpu_idx}
+```
 
 
 
