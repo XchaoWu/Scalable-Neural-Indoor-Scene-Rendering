@@ -1,0 +1,132 @@
+PATH: "/home/yons/4TB/data/salon_debug/mesh/mesh.ply"
+DATADIR: "/home/yons/4TB/data/salon_debug/tiles"
+LOGDIR: '/home/yons/4TB/data/salon_debug/logs'
+CAMPATH: '/home/yons/4TB/data/salon_debug/camera.log'
+IMAGEPATH: '/home/yons/4TB/data/salon_debug/images'
+IGNORE: '/home/yons/4TB/data/salon_debug/ignore.log'
+VAL: '/home/yons/4TB/data/salon_debug/val_new.txt'
+MIRROR_DEPTHPATH: '/home/yons/4TB/data/salon_debug/mirror_depths'
+DEPTHPATH: '/home/yons/4TB/data/salon_debug/depths'
+TILEGROUPDIR: '/home/yons/4TB/data/salon_debug/groups_newnew'
+WORKSPACE: '/home/yons/4TB/data/salon_debug'
+
+
+DILATE_VOXELS: 2 
+
+PRETRAINED: '' 
+LOAD_COEFF: False
+LOAD_MODEL: False
+
+RENDERDIR: '/home/yons/4TB/data/salon_debug/demo'
+RENDER_CAM: '/home/yons/4TB/data/salon_debug/render_path/render_path.txt'
+
+DEBUG: False 
+
+PREFIX: "FIRST-ITR-"
+VOXEL_SIZE: 0.02  
+NUM_VOXEL: 64 
+NUM_BLOCK: 32 
+DILATE_SIZE: 0.01 
+MAX_TRACING_TILE: 30 
+
+HEIGHT: 610 
+WIDTH: 900 
+
+DEG: 2 
+ETA_REFLECTION: 0.0001 # learning rate for relfection 
+
+SURFACE_MLP:
+  WIDTH: 64
+  DEPTH: 8
+  L: 10
+
+REFLECTION_MLP:
+  WIDTH: 64
+  DEPTH: 6
+  L: 10
+
+FILTER_IMGS:
+  NUM_TILES: 20
+  NEED: 60
+
+INIT_VOXEL: True
+SEED: 8
+GPUIDXS: [0]
+ETA: 0.001
+BATCHSIZE: 1
+NSAMPLES: 64
+RSAMPLES: 64
+BGSAMPLE: 32
+BGSAMPLE_RANGE: 0.5 
+EPOCH: 50
+SCHDULER:
+  STEP_SIZE: 5
+  GAMMA: 0.95
+LOGIMG_STEP: 500
+
+PATCH_TRAIN: True 
+PATCH_SIZE: 91
+
+K0_WEIGHT: 0
+KN_WEIGHT: 1.0
+SPARSITY_WEIGHT: 0
+DIFFUSE_WEIGHT: 1.0
+BINARY_WEIGHT: 0
+VD_REGULAR_WEIGHT: 0
+HARD_MINING_WEIGHT: 1.0
+SMOOTH_WEIGHT: 0
+GRAD_WEIGHT: 0
+MSE_WEIGHT:  1.0
+SSIM_WEIGHT: 1.0
+VGG_WEIGHT: 0.1
+VGG_LAYER: [1,2,3]
+
+HARDMINING_EPOCH: 10 
+VIEWDEPENDENT_EPOCH: 10 
+EPOCH_SAVE: 5
+EPOCH_INFER: 5
+EPOCH_PRUNING: 10
+
+
+TRAIN_RENDER:
+  HEIGHT: 256
+  WIDTH: 256
+  NEAR: 10 
+  UP: [0,-1,0]
+  NUM: 60
+  DIS: 1.5 
+  FPS: 15 
+  FACE: [0,-0.7071,0.7071]
+  MODE: 'forward'
+  SCALE: 0.25
+  RADS: [6,2,0,1]
+
+RENDER:
+  HEIGHT: 610
+  WIDTH: 900 
+  NEAR: 5 
+  UP: [0,-1,0]
+  NUM: 60
+  DIS: 3.0
+  FPS: 15 
+  FACE: [-0.2, -0.5, -0.7071]
+  MODE: 'val' #[forward, 360, inter, keypoint, captured, path, val]
+  CAMPATH: '/home/yons/8TB/data/final_demo/Salon_debug/renderPath_paper_fig_60.txt'
+  SCALE: 1.0
+  RADS: [10,3,0,1]
+  START: 5
+  END: 100
+  IMGIDX: []
+  SAVE_IMG: True
+  SAVE_VIDEO: False 
+  
+  VIDEO_NAME: 'FarRender'
+  Unet: '/home/yons/4TB/data/salon_debug/logs_unet/2022-04-12-16-48/epoch-1500.pth'
+PRUNING:
+  ENABLE: True
+  SCHEDULE:
+    BLOCK: [2, 2, 1, 1]
+    EPOCH: [10, 20, 30, 100000000]
+    TRANS: [0.004, 0.006, 0.008, 0.01]
+    THRESH: [0.8, 0.7, 0.6, 0.5]
+  TRANS_WHEN_SAMPLE: [1.0, 1.0, 1.0, 1.0] # 

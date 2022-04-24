@@ -1,0 +1,8 @@
+# ninja log v5
+2	19203	1637828328	/home/yons/projects/Tile_based_scene_rendering/py/cuda/build/temp.linux-x86_64-3.8/Helper.o	8eb3af56c86dad0
+0	19698	1637828329	/home/yons/projects/Tile_based_scene_rendering/py/cuda/build/temp.linux-x86_64-3.8/Sample.o	baec966fed83ae14
+1	19808	1637828329	/home/yons/projects/Tile_based_scene_rendering/py/cuda/build/temp.linux-x86_64-3.8/SceneRender.o	50ad848aa3aa4ce
+2	24540	1637828334	/home/yons/projects/Tile_based_scene_rendering/py/cuda/build/temp.linux-x86_64-3.8/binding.o	c811badae7f09d43
+2	47036	1637828356	/home/yons/projects/Tile_based_scene_rendering/py/cuda/build/temp.linux-x86_64-3.8/Helper_kernel.o	5709c4c2dda20135
+1	47408	1637828357	/home/yons/projects/Tile_based_scene_rendering/py/cuda/build/temp.linux-x86_64-3.8/Sample_kernel.o	b69833f567d62fcb
+1	48378	1637828358	/home/yons/projects/Tile_based_scene_rendering/py/cuda/build/temp.linux-x86_64-3.8/SceneRender_kernel.o	ef383c0420682110
