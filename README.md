@@ -69,7 +69,7 @@ For training a tile, please run:
 python train.py -c {config_file} -t {tileIdx} -g {gpu_idx}
 ```
 
-For training a group of tile, please first make a file `group.txt` as follows:
+For training a group of tiles, please first make a file `group.txt` as follows:
 
 ```txt
 tileIdx1
