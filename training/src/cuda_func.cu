@@ -2522,7 +2522,6 @@ __global__ void gen_voxels_kernel(
         {
             cur_min_dis[j] = INF;
         }
-
         int start_face = ConFaceStart[cur_task_idx];
         int face_num = ConFaceNum[cur_task_idx];
         for (int j=start_face; j<start_face + face_num; j++)

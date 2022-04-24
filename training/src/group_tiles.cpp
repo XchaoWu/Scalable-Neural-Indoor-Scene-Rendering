@@ -261,7 +261,6 @@ std::vector<int> group_tiles(
     std::vector<int> &tiles_list,
     std::vector<int> &group_start)
 {
-    std::cout << "读取模型" << std::endl;
     std::vector<float3> vertices;
     std::vector<int3> faces;
     std::vector<float2> uv_array;
@@ -269,8 +268,6 @@ std::vector<int> group_tiles(
 
     cnpy::NpyArray label_npy = cnpy::npy_load(label_path);
     int* face_label = label_npy.data<int>();
-
-    std::cout << "完成数据读取" << std::endl;
 
     int num_face = (int)faces.size();
 
