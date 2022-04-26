@@ -4,3 +4,4 @@ training/src/build/*
 rendering/src/build/
 *.pyc 
 *.ini
+.vscode 

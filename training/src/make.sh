@@ -19,7 +19,11 @@ fi
 # rm -r $BASEDIR/build 
 # python setup.py build --build-lib $LIBDIR
 # mv $LIBDIR/CUDA_EXT.*.so $LIBDIR/CUDA_EXT.so 
-# echo "Build CUDA EXT successfully!"
+if [$? == 0];then
+    echo "Build CUDA_EXT successfully!"
+else
+    echo "[failed] Build CUDA_EXT!"
+fi
 
 nvcc -std=c++11 --shared --compiler-options "-fpic -shared" \
 -I $INCLUDE_DIR -c -o $LIBDIR/libcuda_func.so cuda_func.cu
