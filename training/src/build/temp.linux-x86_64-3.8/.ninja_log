@@ -1,6 +1,0 @@
-# ninja log v5
-1	20184	1650952199	/home/yons/projects/Scalable-Neural-Indoor-Scene-Rendering/training/src/build/temp.linux-x86_64-3.8/Helper.o	c536dc3303e4439e
-0	20448	1650952199	/home/yons/projects/Scalable-Neural-Indoor-Scene-Rendering/training/src/build/temp.linux-x86_64-3.8/Sample.o	5ce7a03d9a870e10
-2	23804	1650952203	/home/yons/projects/Scalable-Neural-Indoor-Scene-Rendering/training/src/build/temp.linux-x86_64-3.8/binding.o	e380101fd2c330ef
-1	48964	1650952228	/home/yons/projects/Scalable-Neural-Indoor-Scene-Rendering/training/src/build/temp.linux-x86_64-3.8/Helper_kernel.o	5fe99f4decc38221
-1	49400	1650952228	/home/yons/projects/Scalable-Neural-Indoor-Scene-Rendering/training/src/build/temp.linux-x86_64-3.8/Sample_kernel.o	16bc3d154a760432

@@ -6,13 +6,18 @@ from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 print(find_packages())
 CUDA_FLAGS = [] 
 
+
+
+dependency_dir = '/'.join(os.path.join(os.path.split(os.path.abspath(__file__))[0]).split('/')[:-2] + ['dependencies'])
+
 headers = [os.path.join(os.path.split(os.path.abspath(__file__))[0], 'include'),
-           os.path.join(os.path.split(os.path.abspath(__file__))[0], 'imgui'),
-           os.path.join(os.path.split(os.path.abspath(__file__))[0], 'imgui/backends')]
+           os.path.join(dependency_dir, 'imgui'),
+           os.path.join(dependency_dir, 'imgui/backends')]
 
 
-ui_src = list(glob('imgui/*.cpp')) + ['imgui/backends/imgui_impl_glfw.cpp',
-                                        'imgui/backends/imgui_impl_opengl3.cpp']
+ui_src = list(glob(os.path.join(dependency_dir,'imgui/*.cpp'))) + \
+            [os.path.join(dependency_dir,'imgui/backends/imgui_impl_glfw.cpp'), 
+             os.path.join(dependency_dir, 'imgui/backends/imgui_impl_opengl3.cpp')]
 
 
 ext_modules = [
@@ -39,7 +44,7 @@ INSTALL_REQUIREMENTS = ['numpy', 'torch']
 setup(
     name='FASTRENDERING',
     description='cuda extension operation',
-    author='xchao',
+    author='',
     version='0.1',
     install_requires=INSTALL_REQUIREMENTS,
     ext_modules=ext_modules,

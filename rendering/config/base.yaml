@@ -1,5 +1,7 @@
 scene_path: '/home/yons/8TB/data/data/renderData.npz'
 cnn_path: '/home/yons/8TB/data/data/cnn.pth'
+# scene_path: '/home/yons/8TB/data/coffee/renderData.npz'
+# cnn_path: '/home/yons/8TB/data/coffee/logs_unet/2022-01-25-17-50/epoch-230.pth'
 height: 720
 width: 1280
 focal: 750
