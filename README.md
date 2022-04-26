@@ -63,7 +63,9 @@ bash demo.sh
 
 ## Training
 
-Compile:
+Set your own **python directory** and **dependency path** in `./Scalable-Neural-Indoor-Scene-Rendering/training/src/make.sh`.
+
+Then, Compilation:
 
 ```shell
 ./Scalable-Neural-Indoor-Scene-Rendering/training/src$ bash make.sh

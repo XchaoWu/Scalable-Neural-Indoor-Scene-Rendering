@@ -708,15 +708,15 @@ void get_trainData_kernel_v2(
         int flag_first = -1;
 
 
-        int ref_idx = -1;
-        for (int j=0; j<max_tracingTile; j++)
-        {
-            if (cur_visitedTiles[j] == 2185)
-            {
-                ref_idx = j;
-                break;
-            }
-        }
+        // int ref_idx = -1;
+        // for (int j=0; j<max_tracingTile; j++)
+        // {
+        //     if (cur_visitedTiles[j] == 2185)
+        //     {
+        //         ref_idx = j;
+        //         break;
+        //     }
+        // }
         for (int j=0; j<max_tracingTile; j++)
         {
             if (cur_doubleHits[j].x != -1){

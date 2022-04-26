@@ -12,8 +12,6 @@ ext_modules = [
     CUDAExtension('CUDA_EXT', [
         'Sample.cpp',
         'Sample_kernel.cu',
-        'SceneRender.cpp',
-        'SceneRender_kernel.cu',
         'Helper.cpp',
         'Helper_kernel.cu',
         'binding.cpp'
