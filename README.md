@@ -63,6 +63,14 @@ bash demo.sh
 
 ## Training
 
+Compile:
+
+```shell
+./Scalable-Neural-Indoor-Scene-Rendering/training/src$ bash make.sh
+```
+
+
+
 For training a tile, please run:
 
 ```shell
