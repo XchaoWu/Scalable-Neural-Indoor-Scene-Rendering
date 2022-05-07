@@ -2,7 +2,7 @@
 
 ![](./pics/pipeline.png)
 
- ### [Project Page](https://xchaowu.github.io/) | [Video](https://www.youtube.com/watch?v=hn-IVZZ-_lM) | [Paper]()  
+ ### [Project Page](https://xchaowu.github.io/papers/scalable-nisr/) | [Video](https://www.youtube.com/watch?v=hn-IVZZ-_lM) | [Paper](https://xchaowu.github.io/papers/scalable-nisr/snisr.pdf)  
 
 We propose a scalable neural scene reconstruction and rendering method to support distributed training and interactive rendering of large indoor scenes.
 
